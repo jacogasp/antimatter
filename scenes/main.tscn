@@ -16,7 +16,8 @@ script = ExtResource("1_vasmq")
 [node name="Player" parent="." instance=ExtResource("1_nn4or")]
 position = Vector2(245, 524)
 Speed = 200.0
-JumpVelocity = 150.0
+HorizontalDump = 8.0
+JumpVelocity = 1000.0
 
 [node name="Walls" type="Node2D" parent="."]
 position = Vector2(191, 824)

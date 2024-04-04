@@ -9,6 +9,9 @@ namespace Characters
     public float Speed { get; set; } = 5.0f;
 
     [Export]
+    public float HorizontalDump { get; set; } = 1.0f;
+
+    [Export]
     public float JumpVelocity { get; set; } = 4.5f;
 
     [Export]
@@ -32,16 +35,15 @@ namespace Characters
     {
       stateMachine.Update(this, delta);
       AddForce(Vector2.Down * gravity);
-      HandleMovement();
       var velocity = Velocity;
       velocity += _acceleration * (float)delta;
-      velocity.X = Mathf.Lerp(Velocity.X, 0, 0.1f);
+      velocity.X = Mathf.Lerp(Velocity.X, 0, HorizontalDump * 0.01f);
       Velocity = velocity;
       MoveAndSlide();
       _acceleration *= Vector2.Zero;
     }
 
-    void AddForce(Vector2 force)
+    public void AddForce(Vector2 force)
     {
       _acceleration += force;
     }
@@ -52,16 +54,6 @@ namespace Characters
       {
         return Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
       }
-    }
-
-
-    void HandleMovement()
-    {
-      var target = Position + InputDirection;
-      var desired = target - Position;
-      desired = desired.Normalized() * Speed;
-      var steering = desired - Velocity;
-      AddForce(steering * AngularSpeed);
     }
   }
 
@@ -126,9 +118,6 @@ namespace Characters
     public override void Enter(Player gameObject)
     {
       GD.Print("jump");
-      var velocity = gameObject.Velocity;
-      velocity.Y = gameObject.JumpVelocity;
-      gameObject.Velocity = velocity;
     }
 
     public override State<Player> HandleInput(Player gameObject)
@@ -142,7 +131,7 @@ namespace Characters
 
     public override void Update(Player gameObject, float delta)
     {
-
+      gameObject.AddForce(Vector2.Up * gameObject.JumpVelocity);
     }
   }
 }
