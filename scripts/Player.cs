@@ -141,11 +141,11 @@ namespace Characters
     public override void Update(Player gameObject, float delta)
     {
       float velocityX = facing.X * gameObject.Speed;
-      var velocity = new Vector2(velocityX, gameObject.Velocity.Y);
       if (!gameObject.IsOnFloor() && Player.InputDirection != facing)
       {
-        velocity += Player.InputDirection * gameObject.JumpingHDump;
+        velocityX += Player.InputDirection.X * gameObject.JumpingHDump;
       }
+      var velocity = new Vector2(velocityX, gameObject.Velocity.Y);
       gameObject.Velocity = velocity;
     }
   }
