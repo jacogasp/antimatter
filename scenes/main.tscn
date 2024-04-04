@@ -4,10 +4,10 @@
 [ext_resource type="Script" path="res://scripts/Main.cs" id="1_vasmq"]
 [ext_resource type="PackedScene" uid="uid://d00rk0hvsgoib" path="res://scenes/wall.tscn" id="3_xnpad"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtcoy"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bujvu"]
 size = Vector2(796, 180.5)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1mdfl"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fjmbf"]
 size = Vector2(656, 238)
 
 [node name="Main" type="Node2D"]
@@ -15,9 +15,6 @@ script = ExtResource("1_vasmq")
 
 [node name="Player" parent="." instance=ExtResource("1_nn4or")]
 position = Vector2(245, 524)
-Speed = 200.0
-HorizontalDump = 8.0
-JumpVelocity = 1000.0
 
 [node name="Walls" type="Node2D" parent="."]
 position = Vector2(191, 824)
@@ -26,13 +23,13 @@ position = Vector2(191, 824)
 
 [node name="CollisionShape2D" parent="Walls/Wall" index="0"]
 position = Vector2(0, -3.75)
-shape = SubResource("RectangleShape2D_dtcoy")
+shape = SubResource("RectangleShape2D_bujvu")
 
 [node name="Wall2" parent="Walls" instance=ExtResource("3_xnpad")]
 position = Vector2(717, -63)
 
 [node name="CollisionShape2D" parent="Walls/Wall2" index="0"]
-shape = SubResource("RectangleShape2D_1mdfl")
+shape = SubResource("RectangleShape2D_fjmbf")
 
 [editable path="Walls/Wall"]
 [editable path="Walls/Wall2"]

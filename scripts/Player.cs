@@ -15,6 +15,9 @@ namespace Characters
     public float JumpVelocity { get; set; } = 4.5f;
 
     [Export]
+    public float JumpingHDump { get; set; } = 1f;
+
+    [Export]
     public float AngularSpeed { get; set; } = 1.0f;
 
     private readonly StateMachine<Player> stateMachine = new();
@@ -115,9 +118,15 @@ namespace Characters
 
   class Jumping : State<Player>
   {
+    private Vector2 facing;
+
     public override void Enter(Player gameObject)
     {
       GD.Print("jump");
+      facing.X = Player.InputDirection.X;
+      var velocity = gameObject.Velocity;
+      velocity += Vector2.Up * gameObject.JumpVelocity;
+      gameObject.Velocity = velocity;
     }
 
     public override State<Player> HandleInput(Player gameObject)
@@ -131,7 +140,13 @@ namespace Characters
 
     public override void Update(Player gameObject, float delta)
     {
-      gameObject.AddForce(Vector2.Up * gameObject.JumpVelocity);
+      float velocityX = facing.X * gameObject.Speed;
+      var velocity = new Vector2(velocityX, gameObject.Velocity.Y);
+      if (!gameObject.IsOnFloor() && Player.InputDirection != facing)
+      {
+        velocity += Player.InputDirection * gameObject.JumpingHDump;
+      }
+      gameObject.Velocity = velocity;
     }
   }
 }
