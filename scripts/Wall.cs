@@ -27,11 +27,6 @@ namespace Environment
       AddChild(_meshInstance2D);
     }
 
-    public override void _Process(double delta)
-    {
-      Position = _collisionShape2D.Position;
-    }
-
     private void UpdateMesh()
     {
       _meshInstance2D.Scale = _rectangleShape2D.Size;
