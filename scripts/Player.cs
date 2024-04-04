@@ -31,9 +31,12 @@ namespace Characters
     public override void _PhysicsProcess(double delta)
     {
       stateMachine.Update(this, delta);
-      HandleMovement();
       AddForce(Vector2.Down * gravity);
-      Velocity += _acceleration * (float)delta;
+      HandleMovement();
+      var velocity = Velocity;
+      velocity += _acceleration * (float)delta;
+      velocity.X = Mathf.Lerp(Velocity.X, 0, 0.1f);
+      Velocity = velocity;
       MoveAndSlide();
       _acceleration *= Vector2.Zero;
     }
