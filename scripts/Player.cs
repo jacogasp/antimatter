@@ -71,7 +71,7 @@ namespace Characters
   {
     public override void Enter(Player gameObject)
     {
-      GD.Print("enter idle");
+      GD.Print("idle");
     }
 
     public override State<Player> HandleInput(Player gameObject)
@@ -97,7 +97,7 @@ namespace Characters
   {
     public override void Enter(Player gameObject)
     {
-      GD.Print("enter running");
+      GD.Print("run");
     }
 
     public override State<Player> HandleInput(Player gameObject)
@@ -125,7 +125,7 @@ namespace Characters
   {
     public override void Enter(Player gameObject)
     {
-      GD.Print("enter jumping");
+      GD.Print("jump");
       var velocity = gameObject.Velocity;
       velocity.Y = gameObject.JumpVelocity;
       gameObject.Velocity = velocity;
