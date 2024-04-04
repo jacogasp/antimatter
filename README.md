@@ -3,7 +3,7 @@ Antimatter
 
 # Requirements
 
-- [Godot with .NET](https://godotengine.org/download/)
+- [Godot 4.2.1 with .NET](https://godotengine.org/download/)
 - [.NET v8](https://dotnet.microsoft.com/download)
 
 # Documentation
