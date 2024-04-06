@@ -4,13 +4,13 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_l0tpq"]
 radius = 2.53157
-height = 20.3337
+height = 69.1345
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_ir7s0")
 Speed = 400.0
 HorizontalDump = 8.0
-JumpVelocity = 500.0
+JumpVelocity = 800.0
 JumpingHDump = 250.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -19,8 +19,8 @@ shape = SubResource("CapsuleShape2D_l0tpq")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_left = -20.0
-offset_top = -20.0
+offset_top = -100.0
 offset_right = 20.0
-offset_bottom = 20.0
+offset_bottom = 65.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
