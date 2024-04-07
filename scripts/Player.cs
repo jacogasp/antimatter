@@ -73,7 +73,7 @@ namespace Characters
 
         public override State<Player> HandleInput(Player gameObject) {
           if (Input.IsActionJustPressed("jump") && gameObject.IsOnFloor()) {
-            return new Jumping(false);
+            return new StandingJump();
           }
           if (Player.InputDirection != Vector2.Zero) {
             return new Running();
@@ -92,7 +92,7 @@ namespace Characters
 
         public override State<Player> HandleInput(Player gameObject) {
           if (Input.IsActionJustPressed("jump") && gameObject.IsOnFloor()) {
-            return new Jumping(true);
+            return new RunningJump();
           }
           if (Player.InputDirection == Vector2.Zero) {
             return new Idle();
@@ -107,34 +107,46 @@ namespace Characters
         }
       }
 
-      class Jumping : State<Player>
+      class StandingJump : State<Player>
+      {
+        public override void Enter(Player gameObject) {
+          var velocity = gameObject.Velocity;
+          velocity += Vector2.Up * gameObject.JumpVelocity.Y;
+          gameObject.Velocity = velocity;
+          GD.Print("standing jump");
+        }
+
+        public override State<Player> HandleInput(Player gameObject) {
+          if (gameObject.IsOnFloor()) {
+            return new Idle();
+          }
+          return this;
+        }
+
+        public override void Update(Player gameObject, float delta) {
+          var velocity = gameObject.Velocity;
+          velocity.X = gameObject.JumpStandingVelocity.X * Player.HorizontalInputAxis;
+          velocity.Y = Mathf.Clamp(velocity.Y, -Mathf.Inf, gameObject.FallingVelocity.Y);
+          gameObject.Velocity = velocity;
+        }
+      }
+
+      class RunningJump : State<Player>
       {
         private Vector2 facingDirection;
-        private readonly bool _wasRunning;
         private float speedX = 0;
         private float minSpeedX = 0;
         private bool directionChanged = false;
         private float t = 0;
 
-        public Jumping(bool wasRunning) {
-          _wasRunning = wasRunning;
-        }
-
         public override void Enter(Player gameObject) {
           var velocity = gameObject.Velocity;
           facingDirection = velocity.X > 0 ? Vector2.Right : Vector2.Left;
-          float jumpYSpeed;
-          if (_wasRunning) {
-            speedX = Mathf.Abs(velocity.X);
-            jumpYSpeed = gameObject.JumpVelocity.Y;
-          } else {
-            speedX = Mathf.Abs(gameObject.JumpStandingVelocity.X);
-            jumpYSpeed = gameObject.JumpStandingVelocity.Y;
-          }
-          velocity += Vector2.Up * jumpYSpeed;
+          speedX = Mathf.Abs(velocity.X);
+          velocity += Vector2.Up * gameObject.JumpVelocity.Y;
           gameObject.Velocity = velocity;
           minSpeedX = Mathf.Abs(gameObject.JumpVelocity.X);
-          GD.Print("jump");
+          GD.Print("running jump");
         }
 
         public override State<Player> HandleInput(Player gameObject) {
@@ -151,19 +163,15 @@ namespace Characters
             facingDirection.X *= -1;
           }
           var vX = Mathf.Abs(speedX * Player.HorizontalInputAxis);
-          if (_wasRunning) {
-            if (directionChanged) {
-              vX = gameObject.FallingVelocity.X;
-            } else if (vX < speedX) {
-              var k = Mathf.Clamp(t * gameObject.JumpHorizontalDump, 0, 1);
-              vX = Mathf.Lerp(speedX, minSpeedX, k);
-              t += delta;
-            }
+          if (directionChanged) {
+            vX = gameObject.FallingVelocity.X;
+          } else if (vX < speedX) {
+            var k = Mathf.Clamp(t * gameObject.JumpHorizontalDump, 0, 1);
+            vX = Mathf.Lerp(speedX, minSpeedX, k);
+            t += delta;
           }
-          vX *= facingDirection.X;
-          var vY = Mathf.Clamp(velocity.Y, -Mathf.Inf, gameObject.FallingVelocity.Y);
-          velocity.X = vX;
-          velocity.Y = vY;
+          velocity.X = vX * facingDirection.X;
+          velocity.Y = Mathf.Clamp(velocity.Y, -Mathf.Inf, gameObject.FallingVelocity.Y);
           gameObject.Velocity = velocity;
         }
       }
