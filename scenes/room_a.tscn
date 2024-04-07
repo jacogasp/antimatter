@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bigwjwvbwn04a"]
+
+[ext_resource type="TileSet" uid="uid://dtusslg3cmd5y" path="res://scenes/tilesets/base_tileset.tres" id="1_qel6s"]
+
+[node name="RoomA" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("1_qel6s")
+format = 2
+layer_0/name = "Blocks"
+layer_0/tile_data = PackedInt32Array(131073, 65536, 3, 131074, 65536, 3, 131075, 65536, 3, 131076, 131072, 3, 131072, 65536, 3, 196607, 0, 3)

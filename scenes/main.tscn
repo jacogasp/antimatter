@@ -1,14 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://8h54k8d0knfw"]
+[gd_scene load_steps=4 format=3 uid="uid://8h54k8d0knfw"]
 
-[ext_resource type="PackedScene" uid="uid://bnsj08qxdb07b" path="res://scenes/player.tscn" id="1_nn4or"]
+[ext_resource type="PackedScene" uid="uid://bnsj08qxdb07b" path="res://scenes/characters/player.tscn" id="1_nn4or"]
 [ext_resource type="Script" path="res://scripts/Main.cs" id="1_vasmq"]
-[ext_resource type="PackedScene" uid="uid://d00rk0hvsgoib" path="res://scenes/wall.tscn" id="3_xnpad"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vo2th"]
-size = Vector2(796, 180.5)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wsdxd"]
-size = Vector2(656, 573)
+[ext_resource type="PackedScene" uid="uid://bigwjwvbwn04a" path="res://scenes/room_a.tscn" id="3_5ucys"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_vasmq")
@@ -19,21 +13,4 @@ position = Vector2(245, 524)
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position_smoothing_enabled = true
 
-[node name="Walls" type="Node2D" parent="."]
-position = Vector2(191, 824)
-
-[node name="Wall" parent="Walls" instance=ExtResource("3_xnpad")]
-
-[node name="CollisionShape2D" parent="Walls/Wall" index="0"]
-position = Vector2(0, -3.75)
-shape = SubResource("RectangleShape2D_vo2th")
-
-[node name="Wall2" parent="Walls" instance=ExtResource("3_xnpad")]
-position = Vector2(717, -63)
-
-[node name="CollisionShape2D" parent="Walls/Wall2" index="0"]
-position = Vector2(0, 26.5)
-shape = SubResource("RectangleShape2D_wsdxd")
-
-[editable path="Walls/Wall"]
-[editable path="Walls/Wall2"]
+[node name="RoomA" parent="." instance=ExtResource("3_5ucys")]
