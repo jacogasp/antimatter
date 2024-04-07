@@ -17,7 +17,10 @@ namespace Characters
       public Vector2 JumpVelocity { get; set; } = new(50.0f, 800.0f);
 
       [Export]
-      public Vector2 JumpStandingVelocity { get; set; } = new(200, 800);
+      public Vector2 StandingJumpVelocity { get; set; } = new(200, 800);
+
+      [Export]
+      public Vector2 AirJumpVelocity { get; set; } = new Vector2(200, 300);
 
       [Export]
       public float JumpHorizontalDump { get; set; } = 0.1f;
@@ -46,7 +49,7 @@ namespace Characters
         AddForce(Vector2.Down * gravity);
         var velocity = Velocity;
         velocity += _acceleration * (float)delta;
-        velocity.X = Mathf.Lerp(Velocity.X, 0, HorizontalDump * 0.01f);
+        velocity.Y = Mathf.Clamp(velocity.Y, -Mathf.Inf, FallingVelocity.Y);
         Velocity = velocity;
         MoveAndSlide();
         _acceleration *= Vector2.Zero;
@@ -61,6 +64,9 @@ namespace Characters
 
       public static float HorizontalInputAxis =>
         Input.GetAxis("ui_left", "ui_right");
+
+      public bool DirectionJustChanged => Velocity.X * HorizontalInputAxis < 0;
+      public Vector2 FacingDirection => Velocity.X < 0 ? Vector2.Left : Vector2.Right;
     }
 
     namespace States
@@ -84,7 +90,11 @@ namespace Characters
           return this;
         }
 
-        public override void Update(Player gameObject, float delta) { }
+        public override void Update(Player gameObject, float delta) {
+          var velocity = gameObject.Velocity;
+          velocity.X = Mathf.Lerp(velocity.X, 0, gameObject.HorizontalDump * 0.01f);
+          gameObject.Velocity = velocity;
+        }
       }
 
       class Falling : State<Player>
@@ -103,7 +113,6 @@ namespace Characters
         public override void Update(Player gameObject, float delta) {
           var velocity = gameObject.Velocity;
           velocity.X = gameObject.FallingVelocity.X * Player.HorizontalInputAxis;
-          velocity.Y = Mathf.Clamp(velocity.Y, -Mathf.Inf, gameObject.FallingVelocity.Y);
           gameObject.Velocity = velocity;
         }
       }
@@ -152,28 +161,65 @@ namespace Characters
 
         public override void Update(Player gameObject, float delta) {
           var velocity = gameObject.Velocity;
-          velocity.X = gameObject.JumpStandingVelocity.X * Player.HorizontalInputAxis;
-          velocity.Y = Mathf.Clamp(velocity.Y, -Mathf.Inf, gameObject.FallingVelocity.Y);
+          velocity.X = gameObject.StandingJumpVelocity.X * Player.HorizontalInputAxis;
           gameObject.Velocity = velocity;
         }
       }
 
       class RunningJump : State<Player>
       {
-        private Vector2 facingDirection;
-        private float speedX = 0;
         private float minSpeedX = 0;
         private bool directionChanged = false;
         private float t = 0;
 
         public override void Enter(Player gameObject) {
           var velocity = gameObject.Velocity;
-          facingDirection = velocity.X > 0 ? Vector2.Right : Vector2.Left;
-          speedX = Mathf.Abs(velocity.X);
           velocity += Vector2.Up * gameObject.JumpVelocity.Y;
           gameObject.Velocity = velocity;
           minSpeedX = Mathf.Abs(gameObject.JumpVelocity.X);
           GD.Print("running jump");
+        }
+
+        public override State<Player> HandleInput(Player gameObject) {
+          if (gameObject.IsOnFloor()) {
+            return new Idle();
+          }
+          if (Input.IsActionJustPressed("jump")) {
+            return new AirJump();
+          }
+          return this;
+        }
+
+        public override void Update(Player gameObject, float delta) {
+          var velocity = gameObject.Velocity;
+          if (gameObject.DirectionJustChanged) {
+            directionChanged = true;
+          }
+          if (directionChanged) {
+            velocity.X = gameObject.FallingVelocity.X * Player.HorizontalInputAxis;
+          } else if (Mathf.Abs(Player.HorizontalInputAxis) < 1) {
+            var k = Mathf.Clamp(t * gameObject.JumpHorizontalDump, 0, 1);
+            var vX = gameObject.FacingDirection.X * minSpeedX;
+            var targetVelocity = new Vector2(vX, velocity.Y);
+            velocity = velocity.Lerp(targetVelocity, k);
+            t += delta;
+          }
+          gameObject.Velocity = velocity;
+        }
+      }
+
+      class AirJump : State<Player>
+      {
+        private float minSpeedX = 0;
+        private bool directionChanged = false;
+        private float t = 0;
+
+        public override void Enter(Player gameObject) {
+          var velocity = gameObject.Velocity;
+          velocity += Vector2.Up * gameObject.AirJumpVelocity.Y;
+          gameObject.Velocity = velocity;
+          minSpeedX = Mathf.Abs(gameObject.AirJumpVelocity.X);
+          GD.Print("air jump");
         }
 
         public override State<Player> HandleInput(Player gameObject) {
@@ -185,20 +231,18 @@ namespace Characters
 
         public override void Update(Player gameObject, float delta) {
           var velocity = gameObject.Velocity;
-          if (gameObject.Velocity.X * Player.HorizontalInputAxis < 0) {
+          if (gameObject.DirectionJustChanged) {
             directionChanged = true;
-            facingDirection.X *= -1;
           }
-          var vX = Mathf.Abs(speedX * Player.HorizontalInputAxis);
           if (directionChanged) {
-            vX = gameObject.FallingVelocity.X;
-          } else if (vX < speedX) {
+            velocity.X = gameObject.FallingVelocity.X * Player.HorizontalInputAxis;
+          } else if (Mathf.Abs(Player.HorizontalInputAxis) < 1) {
             var k = Mathf.Clamp(t * gameObject.JumpHorizontalDump, 0, 1);
-            vX = Mathf.Lerp(speedX, minSpeedX, k);
+            var vX = gameObject.FacingDirection.X * minSpeedX;
+            var targetVelocity = new Vector2(vX, velocity.Y);
+            velocity = velocity.Lerp(targetVelocity, k);
             t += delta;
           }
-          velocity.X = vX * facingDirection.X;
-          velocity.Y = Mathf.Clamp(velocity.Y, -Mathf.Inf, gameObject.FallingVelocity.Y);
           gameObject.Velocity = velocity;
         }
       }

@@ -7,9 +7,11 @@ radius = 12.1037
 height = 46.2606
 
 [node name="Player" type="CharacterBody2D"]
+scale = Vector2(1, 1.00224)
 script = ExtResource("1_ir7s0")
 Speed = 400.0
 HorizontalDump = 8.0
+AirJumpVelocity = Vector2(200, 500)
 JumpHorizontalDump = 0.5
 FallingVelocity = Vector2(200, 1000)
 
