@@ -12,15 +12,12 @@ namespace Algorithms
   {
     public State<T> CurrentState { get; set; }
 
-    public void Update(T gameObject, double delta)
-    {
+    public void Update(T gameObject, double delta) {
       var nextState = CurrentState.HandleInput(gameObject);
-      if (nextState == null)
-      {
+      if (nextState == null) {
         return;
       }
-      if (nextState != CurrentState)
-      {
+      if (nextState != CurrentState) {
         nextState.Enter(gameObject);
       }
       CurrentState = nextState;
