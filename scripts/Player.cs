@@ -12,10 +12,17 @@ namespace Characters
     public float HorizontalDump { get; set; } = 1.0f;
 
     [Export]
-    public float JumpVelocity { get; set; } = 4.5f;
+    public Vector2 JumpVelocity { get; set; } = new(50.0f, 800.0f);
 
     [Export]
-    public float JumpingHDump { get; set; } = 1f;
+    public Vector2 JumpStandingVelocity { get; set; } = new(200, 800);
+
+    [Export]
+    public float JumpHorizontalDump { get; set; } = 0.1f;
+
+
+    [Export]
+    public Vector2 FallingVelocity { get; set; } = new(20f, 1000f);
 
     [Export]
     public float AngularSpeed { get; set; } = 1.0f;
@@ -58,6 +65,14 @@ namespace Characters
         return Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
       }
     }
+
+    public static float HorizontalInputAxis
+    {
+      get
+      {
+        return Input.GetAxis("ui_left", "ui_right");
+      }
+    }
   }
 
   // States
@@ -73,7 +88,7 @@ namespace Characters
     {
       if (Input.IsActionJustPressed("jump") && gameObject.IsOnFloor())
       {
-        return new Jumping();
+        return new Jumping(false);
       }
       if (Player.InputDirection != Vector2.Zero)
       {
@@ -99,7 +114,7 @@ namespace Characters
     {
       if (Input.IsActionJustPressed("jump") && gameObject.IsOnFloor())
       {
-        return new Jumping();
+        return new Jumping(true);
       }
       if (Player.InputDirection == Vector2.Zero)
       {
@@ -111,22 +126,44 @@ namespace Characters
     public override void Update(Player gameObject, float delta)
     {
       var velocity = gameObject.Velocity;
-      velocity.X = Player.InputDirection.X * gameObject.Speed;
+      velocity.X = Player.HorizontalInputAxis * gameObject.Speed;
       gameObject.Velocity = velocity;
     }
   }
 
   class Jumping : State<Player>
   {
-    private Vector2 facing;
+    private Vector2 facingDirection;
+    private readonly bool _wasRunning;
+    private float speedX = 0;
+    private float minSpeedX = 0;
+    private bool directionChanged = false;
+    private float t = 0;
+
+    public Jumping(bool wasRunning)
+    {
+      _wasRunning = wasRunning;
+    }
 
     public override void Enter(Player gameObject)
     {
-      GD.Print("jump");
-      facing.X = Player.InputDirection.X;
       var velocity = gameObject.Velocity;
-      velocity += Vector2.Up * gameObject.JumpVelocity;
+      facingDirection = velocity.X > 0 ? Vector2.Right : Vector2.Left;
+      float jumpYSpeed;
+      if (_wasRunning)
+      {
+        speedX = Mathf.Abs(velocity.X);
+        jumpYSpeed = gameObject.JumpVelocity.Y;
+      }
+      else
+      {
+        speedX = Mathf.Abs(gameObject.JumpStandingVelocity.X);
+        jumpYSpeed = gameObject.JumpStandingVelocity.Y;
+      }
+      velocity += Vector2.Up * jumpYSpeed;
       gameObject.Velocity = velocity;
+      minSpeedX = Mathf.Abs(gameObject.JumpVelocity.X);
+      GD.Print("jump");
     }
 
     public override State<Player> HandleInput(Player gameObject)
@@ -140,13 +177,32 @@ namespace Characters
 
     public override void Update(Player gameObject, float delta)
     {
-      float velocityX = facing.X * gameObject.Speed;
-      if (!gameObject.IsOnFloor() && Player.InputDirection != facing)
+      var velocity = gameObject.Velocity;
+      if (gameObject.Velocity.X * Player.HorizontalInputAxis < 0)
       {
-        velocityX += Player.InputDirection.X * gameObject.JumpingHDump;
+        directionChanged = true;
+        facingDirection.X *= -1;
       }
-      var velocity = new Vector2(velocityX, gameObject.Velocity.Y);
-      gameObject.Velocity = velocity;
+
+      var vX = Mathf.Abs(speedX * Player.HorizontalInputAxis);
+      if (_wasRunning)
+      {
+        if (directionChanged)
+        {
+          vX = gameObject.FallingVelocity.X;
+        }
+        else if (vX < speedX)
+        {
+          var k = Mathf.Clamp(t * gameObject.JumpHorizontalDump, 0, 1);
+          vX = Mathf.Lerp(speedX, minSpeedX, k);
+          t += delta;
+        }
+      }
+      vX *= facingDirection.X;
+      var vY = Mathf.Clamp(velocity.Y, -Mathf.Inf, gameObject.FallingVelocity.Y);
+      velocity.X = vX;
+      velocity.Y = vY;
+      gameObject.Velocity = velocity; 
     }
   }
 }

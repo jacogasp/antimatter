@@ -3,24 +3,25 @@
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_ir7s0"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_l0tpq"]
-radius = 2.53157
-height = 69.1345
+radius = 12.1037
+height = 46.2606
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_ir7s0")
 Speed = 400.0
 HorizontalDump = 8.0
-JumpVelocity = 800.0
-JumpingHDump = 250.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(7.90023, 1.96718)
-shape = SubResource("CapsuleShape2D_l0tpq")
+JumpHorizontalDump = 0.5
+FallingVelocity = Vector2(200, 1000)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_left = -20.0
-offset_top = -100.0
+offset_top = -59.0
 offset_right = 20.0
-offset_bottom = 65.0
+offset_bottom = 106.0
+scale = Vector2(1, 0.76)
 size_flags_horizontal = 4
 size_flags_vertical = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1.735, 2.89664)
+shape = SubResource("CapsuleShape2D_l0tpq")
