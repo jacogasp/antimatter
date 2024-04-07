@@ -1,5 +1,6 @@
 using Algorithms;
 using Godot;
+using GameSettings;
 
 namespace Characters
 {
@@ -34,11 +35,6 @@ namespace Characters
       private readonly StateMachine<Player> stateMachine = new();
       private Vector2 _acceleration = Vector2.Zero;
 
-      // Get the gravity from the project settings to be synced with RigidBody nodes.
-      private readonly float gravity = ProjectSettings
-        .GetSetting("physics/2d/default_gravity")
-        .AsSingle();
-
       public override void _Ready() {
         stateMachine.CurrentState = new States.Idle();
         GD.Print("Player ready");
@@ -46,7 +42,7 @@ namespace Characters
 
       public override void _PhysicsProcess(double delta) {
         stateMachine.Update(this, delta);
-        AddForce(Vector2.Down * gravity);
+        AddForce(Vector2.Down * Physics.Gravity);
         var velocity = Velocity;
         velocity += _acceleration * (float)delta;
         velocity.Y = Mathf.Clamp(velocity.Y, -Mathf.Inf, FallingVelocity.Y);
