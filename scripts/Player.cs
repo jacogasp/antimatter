@@ -75,6 +75,9 @@ namespace Characters
           if (Input.IsActionJustPressed("jump") && gameObject.IsOnFloor()) {
             return new StandingJump();
           }
+          if (gameObject.Velocity.Y > 0) {
+            return new Falling();
+          }
           if (Player.InputDirection != Vector2.Zero) {
             return new Running();
           }
@@ -82,6 +85,27 @@ namespace Characters
         }
 
         public override void Update(Player gameObject, float delta) { }
+      }
+
+      class Falling : State<Player>
+      {
+        public override void Enter(Player gameObject) {
+          GD.Print("falling");
+        }
+
+        public override State<Player> HandleInput(Player gameObject) {
+          if (gameObject.IsOnFloor()) {
+            return new Idle();
+          }
+          return this;
+        }
+
+        public override void Update(Player gameObject, float delta) {
+          var velocity = gameObject.Velocity;
+          velocity.X = gameObject.FallingVelocity.X * Player.HorizontalInputAxis;
+          velocity.Y = Mathf.Clamp(velocity.Y, -Mathf.Inf, gameObject.FallingVelocity.Y);
+          gameObject.Velocity = velocity;
+        }
       }
 
       class Running : State<Player>
@@ -93,6 +117,9 @@ namespace Characters
         public override State<Player> HandleInput(Player gameObject) {
           if (Input.IsActionJustPressed("jump") && gameObject.IsOnFloor()) {
             return new RunningJump();
+          }
+          if (gameObject.Velocity.Y > 0) {
+            return new Falling();
           }
           if (Player.InputDirection == Vector2.Zero) {
             return new Idle();
