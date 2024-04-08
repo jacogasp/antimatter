@@ -14,6 +14,9 @@ namespace Characters
       public float Speed { get; set; } = 5.0f;
 
       [Export]
+      public float GravityModifier { get; set; } = 1.0f;
+
+      [Export]
       public float HorizontalDump { get; set; } = 1.0f;
 
       [Export]
@@ -44,7 +47,7 @@ namespace Characters
 
       public override void _PhysicsProcess(double delta) {
         stateMachine.Update(this, delta);
-        AddForce(Vector2.Down * Physics.Gravity);
+        AddForce(Vector2.Down * Physics.Gravity * GravityModifier);
         var velocity = Velocity;
         velocity += _acceleration * (float)delta;
         velocity.Y = Mathf.Clamp(velocity.Y, -Mathf.Inf, FallingVelocity.Y);
@@ -210,7 +213,7 @@ namespace Characters
             velocity.X *= gameObject.FacingDirection.X;
             t += delta;
           } else {
-            velocity.X = gameObject.FallingVelocity.X * Player.HorizontalInputAxis;
+            velocity.X = gameObject.Speed * Player.HorizontalInputAxis;
           }
           gameObject.Velocity = velocity;
         }
