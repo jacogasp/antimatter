@@ -217,19 +217,19 @@ radius = 62.0
 height = 277.379
 
 [node name="Player" type="CharacterBody2D"]
-scale = Vector2(1, 1.00224)
-safe_margin = 2.0
+safe_margin = 0.001
 script = ExtResource("1_ir7s0")
-Speed = 400.0
-AirJumpVelocity = Vector2(200, 500)
-FallingVelocity = Vector2(200, 1000)
+Speed = 1200.0
+GravityModifier = 5.0
+JumpVelocity = Vector2(50, 3000)
+StandingJumpVelocity = Vector2(200, 3000)
+AirJumpVelocity = Vector2(200, 2000)
+FallingVelocity = Vector2(200, 5000)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(11, 0)
 sprite_frames = SubResource("SpriteFrames_5l8a0")
-animation = &"jump"
-frame = 4
-frame_progress = 0.213171
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_dxsso")

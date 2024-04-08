@@ -8,9 +8,12 @@
 script = ExtResource("1_vasmq")
 
 [node name="Player" parent="." instance=ExtResource("1_nn4or")]
-position = Vector2(245, 524)
+position = Vector2(254, -24)
+scale = Vector2(2.64939, 2.3037)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(9, -105.763)
+zoom = Vector2(0.43, 0.43)
 position_smoothing_enabled = true
 
 [node name="RoomA" parent="." instance=ExtResource("3_5ucys")]
