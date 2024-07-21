@@ -1,8 +1,6 @@
 using Algorithms;
 using Godot;
 using GameSettings;
-using System;
-using System.Runtime.InteropServices;
 
 namespace Characters
 {
@@ -167,7 +165,7 @@ namespace Characters
             return new Idle();
           }
           if (Input.IsActionJustPressed("jump")) {
-            return new AirJump();
+            return new StandingAirJump();
           }
           return this;
         }
@@ -226,6 +224,28 @@ namespace Characters
         }
       }
 
+      class StandingAirJump : State<Player>
+      {
+        public override void Enter(Player gameObject) {
+          var velocity = gameObject.Velocity;
+          velocity.Y = -gameObject.AirJumpVelocity.Y;
+          gameObject.Velocity = velocity;
+          GD.Print("standing air jump");
+        }
+
+        public override State<Player> HandleInput(Player gameObject) {
+          if (gameObject.IsOnFloor()) {
+            return new Idle();
+          }
+          return this;
+        }
+
+        public override void Update(Player gameObject, float delta) {
+          var velocity = gameObject.Velocity;
+          velocity.X = gameObject.AirJumpVelocity.X * Player.HorizontalInputAxis;
+          gameObject.Velocity = velocity;
+        }
+      }
       class AirJump : State<Player>
       {
         private Vector2 entryAbsVelocity;
@@ -249,7 +269,7 @@ namespace Characters
         }
 
         public override void Update(Player gameObject, float delta) {
-          if (Mathf.Abs(Player.HorizontalInputAxis) == 0) {
+          if (Mathf.Abs(Player.HorizontalInputAxis) < float.Epsilon) {
             var velocity = gameObject.Velocity;
             var k = Mathf.Clamp(t / gameObject.JumpHorizontalDump, 0, 1);
             velocity.X = Mathf.Lerp(Mathf.Abs(entryAbsVelocity.X), 0, k);

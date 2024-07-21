@@ -12,9 +12,9 @@ script = ExtResource("1_ir7s0")
 Speed = 1400.0
 GravityModifier = 6.0
 JumpVelocity = Vector2(50, 1800)
-StandingJumpVelocity = Vector2(200, 1800)
-AirJumpVelocity = Vector2(200, 2000)
-FallingVelocity = Vector2(200, 5000)
+StandingJumpVelocity = Vector2(750, 1800)
+AirJumpVelocity = Vector2(500, 2000)
+FallingVelocity = Vector2(500, 5000)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 4)
