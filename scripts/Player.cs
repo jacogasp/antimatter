@@ -111,7 +111,7 @@ namespace Characters
         }
 
         public override State<Player> HandleInput(Player gameObject) {
-          if (gameObject.IsOnFloor()) {
+          if (gameObject.IsOnFloorOnly()) {
             return new Idle();
           }
           return this;
@@ -119,7 +119,7 @@ namespace Characters
 
         public override void Update(Player gameObject, float delta) {
           var velocity = gameObject.Velocity;
-          velocity.X = gameObject.FallingVelocity.X * Player.HorizontalInputAxis;
+          velocity.X = gameObject.Speed * Player.HorizontalInputAxis;
           gameObject.Velocity = velocity;
         }
       }
@@ -147,6 +147,9 @@ namespace Characters
           var velocity = gameObject.Velocity;
           velocity.X = Player.HorizontalInputAxis * gameObject.Speed;
           gameObject.Velocity = velocity;
+          if (gameObject.IsOnWall()) {
+            GD.Print("wall");
+          }
         }
       }
 
@@ -191,7 +194,7 @@ namespace Characters
         }
 
         public override State<Player> HandleInput(Player gameObject) {
-          if (gameObject.IsOnFloor()) {
+          if (gameObject.IsOnFloorOnly()) {
             return new Idle();
           }
           if (Input.IsActionJustPressed("jump")) {
@@ -201,6 +204,10 @@ namespace Characters
         }
 
         public override void Update(Player gameObject, float delta) {
+          if (gameObject.IsOnWall()) {
+            GD.Print("wall");
+            return;
+          }
           var velocity = gameObject.Velocity;
           if (gameObject.DirectionJustChanged) {
             directionChanged = true;
