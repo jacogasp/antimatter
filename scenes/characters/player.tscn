@@ -4,22 +4,29 @@
 [ext_resource type="Texture2D" uid="uid://b2sy3nqdsytn" path="res://assets/environment/block.png" id="2_dcyqc"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_spi58"]
-radius = 47.0
+radius = 30.0
 height = 290.0
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 65792
 script = ExtResource("1_ir7s0")
 Speed = 1400.0
 GravityModifier = 6.0
 JumpVelocity = Vector2(50, 1800)
-StandingJumpVelocity = Vector2(750, 1800)
-AirJumpVelocity = Vector2(500, 2000)
+StandingJumpVelocity = Vector2(1000, 2200)
+AirJumpVelocity = Vector2(750, 2000)
+WallJumpVelocity = Vector2(2000, 2500)
 FallingVelocity = Vector2(500, 5000)
+WallDumping = 0.75
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, 4)
 shape = SubResource("CapsuleShape2D_spi58")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(1.59375, 4.625)
+scale = Vector2(0.90625, 4.1875)
 texture = ExtResource("2_dcyqc")
+
+[node name="WallRay" type="RayCast2D" parent="."]
+target_position = Vector2(40, 2.08165e-12)
+collision_mask = 65536
+collide_with_areas = true

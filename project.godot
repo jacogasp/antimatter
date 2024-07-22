@@ -35,6 +35,12 @@ jump={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="player"
+2d_physics/layer_9="enemies"
+2d_physics/layer_17="walls"
+
 [physics]
 
 2d/solver/solver_iterations=24

@@ -8,7 +8,9 @@
 script = ExtResource("1_vasmq")
 
 [node name="Player" parent="." instance=ExtResource("1_nn4or")]
-position = Vector2(893.001, -899)
+position = Vector2(13729, -227)
+WallJumpVelocity = Vector2(1000, 2500)
+FallingVelocity = Vector2(500, 4000)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(8.99902, -290)
