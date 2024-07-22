@@ -25,6 +25,9 @@ namespace Characters.Player.States
       if (player.IsNearWall()) {
         return new OnWall();
       }
+      if (Input.IsActionJustPressed("down")) {
+        return new Diving();
+      }
       return this;
     }
 

@@ -23,6 +23,9 @@ namespace Characters.Player.States
       if (Input.IsActionJustPressed("jump")) {
         return new AirJump();
       }
+      if (Input.IsActionJustPressed("down")) {
+        return new Diving();
+      }
       return this;
     }
 
