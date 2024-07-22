@@ -4,7 +4,10 @@ using Algorithms;
 namespace Characters.Player.States
 {
   class OnWall : PlayerState
+
   {
+    private float _discharge = 50;
+
     public override void Enter(Player player) {
       GD.Print("on wall");
     }
@@ -22,6 +25,13 @@ namespace Characters.Player.States
       if (player.IsOnFloor()) {
         return new Idle();
       }
+
+      if (_discharge > 0) {
+        --_discharge;
+      } else {
+        return new Falling();
+      }
+
       return this;
     }
 
