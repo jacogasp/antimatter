@@ -8,8 +8,10 @@ namespace Characters.Player.States
     public override void Enter(Player player) {
       GD.Print("on wall");
     }
+
     public override IState<Player> HandleInput(Player player) {
-      if (Input.IsActionJustReleased("jump")) {
+      var directionChanged = player.FacingDirection.X * Player.HorizontalInputAxis < 0;
+      if (Input.IsActionJustReleased("jump") && directionChanged) {
         return new WallJump();
       }
 
@@ -22,9 +24,12 @@ namespace Characters.Player.States
       }
       return this;
     }
+
     public override void Update(Player player, float delta) {
       var velocity = player.Velocity;
-      velocity.Y *= player.WallDumping;
+      if (velocity.Y > 0) {
+        velocity.Y *= player.WallDumping;
+      }
       player.Velocity = velocity;
 
     }
