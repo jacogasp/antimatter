@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://8bifdpqokfvu"]
+
+[ext_resource type="Script" path="res://Scripts/Scenes/Main.cs" id="1_ge87f"]
+[ext_resource type="PackedScene" uid="uid://c8tw74u25gdrq" path="res://Scenes/Rooms/RoomA.tscn" id="2_4171f"]
+[ext_resource type="PackedScene" uid="uid://dl3ldsljs8ems" path="res://Scenes/Characters/Player.tscn" id="2_eyh70"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_ge87f")
+
+[node name="RoomA" parent="." instance=ExtResource("2_4171f")]
+
+[node name="Player" parent="." instance=ExtResource("2_eyh70")]
+scale = Vector2(0.5, 0.5)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]

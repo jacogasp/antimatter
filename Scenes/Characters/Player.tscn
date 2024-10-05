@@ -1,0 +1,137 @@
+[gd_scene load_steps=17 format=3 uid="uid://dl3ldsljs8ems"]
+
+[ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerClass.cs" id="1_1rkq8"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/StateMachine.cs" id="2_esxdj"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/Falling.cs" id="3_6gndt"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/Idle.cs" id="3_8twyb"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/AirJump.cs" id="3_mymsm"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/Diving.cs" id="4_6oijr"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/Running.cs" id="5_5u14n"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/RopeFlying.cs" id="7_351bb"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/OnWall.cs" id="8_yemxq"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/RunningJump.cs" id="9_44rr8"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/StandingAirJump.cs" id="10_2fk77"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/StandingJump.cs" id="11_ougk4"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/WallJump.cs" id="13_dq5jl"]
+[ext_resource type="Texture2D" uid="uid://dtpu7qo1y56dh" path="res://Assets/block.png" id="14_3wh45"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uwawt"]
+radius = 32.0
+height = 274.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_umyf5"]
+radius = 33.0
+height = 270.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 65792
+script = ExtResource("1_1rkq8")
+Speed = 6.0
+FallingVelocity = Vector2(200, 20000)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1, 4)
+texture = ExtResource("14_3wh45")
+
+[node name="Area2D" type="Area2D" parent="."]
+scale = Vector2(0.25, 1)
+collision_mask = 131072
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2(4, 1)
+shape = SubResource("CapsuleShape2D_uwawt")
+
+[node name="States" type="Node" parent="." node_paths=PackedStringArray("CurrentState")]
+script = ExtResource("2_esxdj")
+CurrentState = NodePath("Idle")
+
+[node name="AirJump" type="Node" parent="States" node_paths=PackedStringArray("Idle", "OnWall", "Diving")]
+script = ExtResource("3_mymsm")
+AirJumpVelocity = Vector2(400, 800)
+JumpHorizontalDump = 0.5
+DirectionChangeVelocity = Vector2(200, 0)
+Idle = NodePath("../Idle")
+OnWall = NodePath("../OnWall")
+Diving = NodePath("../Diving")
+
+[node name="Diving" type="Node" parent="States" node_paths=PackedStringArray("Idle")]
+script = ExtResource("4_6oijr")
+DiveVelocity = Vector2(0, 3000)
+Idle = NodePath("../Idle")
+
+[node name="Falling" type="Node" parent="States" node_paths=PackedStringArray("Idle", "OnWall")]
+script = ExtResource("3_6gndt")
+Idle = NodePath("../Idle")
+OnWall = NodePath("../OnWall")
+OnWallSafeMargin = 3.0
+
+[node name="Idle" type="Node" parent="States" node_paths=PackedStringArray("Falling", "Running", "StandingJump")]
+script = ExtResource("3_8twyb")
+Falling = NodePath("../Falling")
+Running = NodePath("../Running")
+StandingJump = NodePath("../StandingJump")
+
+[node name="RopeFlying" type="Node" parent="States" node_paths=PackedStringArray("Idle")]
+script = ExtResource("7_351bb")
+Idle = NodePath("../Idle")
+
+[node name="Running" type="Node" parent="States" node_paths=PackedStringArray("Idle", "RunningJump", "OnWall", "Falling")]
+script = ExtResource("5_5u14n")
+Speed = 1000.0
+Idle = NodePath("../Idle")
+RunningJump = NodePath("../RunningJump")
+OnWall = NodePath("../OnWall")
+Falling = NodePath("../Falling")
+
+[node name="RunningJump" type="Node" parent="States" node_paths=PackedStringArray("Idle", "OnWall", "AirJump")]
+script = ExtResource("9_44rr8")
+JumpVelocity = Vector2(200, 500)
+JumpHorizontalDump = 0.5
+DirectionChangeVelocity = Vector2(200, 0)
+Idle = NodePath("../Idle")
+OnWall = NodePath("../OnWall")
+AirJump = NodePath("../AirJump")
+
+[node name="StandingAirJump" type="Node" parent="States" node_paths=PackedStringArray("Idle", "OnWall")]
+script = ExtResource("10_2fk77")
+AirJumpVelocity = Vector2(0, 400)
+Idle = NodePath("../Idle")
+OnWall = NodePath("../OnWall")
+
+[node name="StandingJump" type="Node" parent="States" node_paths=PackedStringArray("Idle", "OnWall", "StandingAirJump")]
+script = ExtResource("11_ougk4")
+JumpVelocity = Vector2(0, 600)
+Idle = NodePath("../Idle")
+OnWall = NodePath("../OnWall")
+StandingAirJump = NodePath("../StandingAirJump")
+
+[node name="OnWall" type="Node" parent="States" node_paths=PackedStringArray("Idle", "Falling", "WallJump")]
+script = ExtResource("8_yemxq")
+WallDumping = 0.5
+Idle = NodePath("../Idle")
+Falling = NodePath("../Falling")
+WallJump = NodePath("../WallJump")
+
+[node name="WallJump" type="Node" parent="States" node_paths=PackedStringArray("Idle", "AirJump", "Diving", "OnWall")]
+script = ExtResource("13_dq5jl")
+JumpVelocity = Vector2(600, 600)
+Idle = NodePath("../Idle")
+AirJump = NodePath("../AirJump")
+Diving = NodePath("../Diving")
+OnWall = NodePath("../OnWall")
+
+[node name="FrontWallRay" type="RayCast2D" parent="."]
+target_position = Vector2(50, 0)
+collision_mask = 65536
+collide_with_areas = true
+
+[node name="BackWallRay" type="RayCast2D" parent="."]
+target_position = Vector2(-50, 0)
+collision_mask = 65536
+collide_with_areas = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_umyf5")
+
+[connection signal="area_entered" from="Area2D" to="." method="OnAreaEntered"]
+[connection signal="area_exited" from="Area2D" to="." method="OnAreaExited"]
