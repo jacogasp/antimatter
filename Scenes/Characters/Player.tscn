@@ -100,7 +100,7 @@ OnWall = NodePath("../OnWall")
 
 [node name="StandingJump" type="Node" parent="States" node_paths=PackedStringArray("Idle", "OnWall", "StandingAirJump")]
 script = ExtResource("11_ougk4")
-JumpVelocity = Vector2(0, 600)
+JumpVelocity = Vector2(0, 800)
 Idle = NodePath("../Idle")
 OnWall = NodePath("../OnWall")
 StandingAirJump = NodePath("../StandingAirJump")
