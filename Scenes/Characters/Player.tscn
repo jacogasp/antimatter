@@ -26,7 +26,6 @@ height = 270.0
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 65792
 script = ExtResource("1_1rkq8")
-Speed = 6.0
 FallingVelocity = Vector2(200, 20000)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -108,6 +107,7 @@ StandingAirJump = NodePath("../StandingAirJump")
 [node name="OnWall" type="Node" parent="States" node_paths=PackedStringArray("Idle", "Falling", "WallJump")]
 script = ExtResource("8_yemxq")
 WallDumping = 0.5
+Timeout = 0.5
 Idle = NodePath("../Idle")
 Falling = NodePath("../Falling")
 WallJump = NodePath("../WallJump")

@@ -6,7 +6,6 @@ namespace Scripts.Characters.Player
 {
   public partial class PlayerClass : CharacterBody2D
   {
-    [Export] public float Speed { get; set; } = 5.0f;
     [Export] public float GravityModifier { get; set; } = 1.0f;
     [Export] public Vector2 FallingVelocity { get; set; } = new(20f, 1000f);
     [Export] public float AngularSpeed { get; set; } = 1.0f;
