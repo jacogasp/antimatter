@@ -34,7 +34,7 @@ namespace Scripts.Characters.Player.States
 
     public override void Update(PlayerClass player, float delta) {
       var velocity = player.Velocity;
-      velocity.X = JumpVelocity.X * PlayerClass.HorizontalInputAxis;
+      velocity.X = player.FallingVelocity.X * PlayerClass.HorizontalInputAxis;
       player.Velocity = velocity;
     }
   }
