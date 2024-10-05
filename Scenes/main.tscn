@@ -13,3 +13,4 @@ script = ExtResource("1_ge87f")
 scale = Vector2(0.5, 0.5)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
