@@ -21,7 +21,6 @@ namespace Scripts.Characters.Player.States
     }
 
     public override PlayerState HandleInput(PlayerClass player) {
-      var directionChanged = player.FacingDirection.X * PlayerClass.HorizontalInputAxis < 0;
       if (Input.IsActionJustReleased("jump")) {
         return WallJump;
       }
@@ -30,7 +29,7 @@ namespace Scripts.Characters.Player.States
         return Falling;
       }
 
-      if (player.IsOnFloor()) {
+      if (player.IsGrounded()) {
         return Idle;
       }
 

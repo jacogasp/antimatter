@@ -17,21 +17,24 @@ namespace Scripts.Characters.Player.States
 
     private Vector2 entryAbsVelocity;
     private float _t = 0;
+    private bool _detached = false;
 
     public override void Enter(PlayerClass player) {
       var velocity = player.Velocity;
       velocity.Y = -JumpVelocity.Y;
       player.Velocity = velocity;
       entryAbsVelocity = velocity.Abs();
+      _detached = false;
       _t = 0;
       GD.Print("running jump");
     }
 
     public override PlayerState HandleInput(PlayerClass player) {
-      if (player.IsOnFloorOnly()) {
+      if (_detached && player.IsOnGround()) {
+        GD.Print("on ground");
         return Idle;
       }
-      if (player.IsNearWall()) {
+      if (player.IsFrontNearWall()) {
         return OnWall;
       }
       if (Input.IsActionJustPressed("jump")) {
@@ -51,6 +54,9 @@ namespace Scripts.Characters.Player.States
         _t += delta;
       }
       player.Velocity = velocity;
+      if (!player.IsOnGround()) {
+        _detached = true;
+      }
     }
   }
 }

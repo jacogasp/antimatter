@@ -33,7 +33,7 @@ namespace Scripts.Characters.Player.States
         return OnWall;
       }
 
-      if (player.IsOnFloor()) {
+      if (player.IsGrounded()) {
         return Idle;
       }
       if (Input.IsActionJustPressed("jump")) {

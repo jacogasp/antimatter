@@ -31,10 +31,10 @@ namespace Scripts.Characters.Player.States
     }
 
     public override PlayerState HandleInput(PlayerClass player) {
-      if (player.IsOnFloor()) {
+      if (player.IsGrounded()) {
         return Idle;
       }
-      if (player.IsNearWall()) {
+      if (player.IsFrontNearWall()) {
         return OnWall;
       }
       if (Input.IsActionJustPressed("down")) {

@@ -21,7 +21,7 @@ namespace Scripts.Characters.Player.States
     }
 
     public override PlayerState HandleInput(PlayerClass player) {
-      if (player.IsOnFloor()) {
+      if (player.IsOnGround()) {
         if (_discharge > 0) {
           --_discharge;
         } else {

@@ -14,6 +14,8 @@ namespace Scripts.Characters.Player
     private float _startGravityModifier = 1.0f;
     private RayCast2D _frontWallRay;
     private RayCast2D _backWallRay;
+    private RayCast2D _leftFloorRay;
+    private RayCast2D _rightFloorRay;
     private Vector2 _frontWallRayTarget = Vector2.Zero;
     private Vector2 _backWallRayTarget = Vector2.Zero;
     private Vector2 _acceleration = Vector2.Zero;
@@ -22,8 +24,10 @@ namespace Scripts.Characters.Player
 
     public override void _Ready() {
       _startGravityModifier = GravityModifier;
-      _frontWallRay = GetNode<RayCast2D>("FrontWallRay");
-      _backWallRay = GetNode<RayCast2D>("BackWallRay");
+      _frontWallRay = GetNode<RayCast2D>("Rays/FrontWallRay");
+      _backWallRay = GetNode<RayCast2D>("Rays/BackWallRay");
+      _leftFloorRay = GetNode<RayCast2D>("Rays/LeftFloorRay");
+      _rightFloorRay = GetNode<RayCast2D>("Rays/RightFloorRay");
       _frontWallRayTarget = _frontWallRay.TargetPosition;
       _backWallRayTarget = _backWallRay.TargetPosition;
       GD.Print("Player ready");
@@ -69,6 +73,11 @@ namespace Scripts.Characters.Player
     public bool IsBackNearWall() => _backWallRay.IsColliding();
     public bool IsNearWall() => IsFrontNearWall() || IsBackNearWall();
 
+    public bool IsLeftFootOnGround() => _leftFloorRay.IsColliding();
+    public bool IsRightFootOnGround() => _rightFloorRay.IsColliding();
+    public bool IsOnGround() => IsLeftFootOnGround() || IsRightFootOnGround();
+    public bool IsGrounded() => IsLeftFootOnGround() && IsRightFootOnGround();
+
     public void ResetGravityModifier() {
       GravityModifier = _startGravityModifier;
     }
@@ -87,6 +96,20 @@ namespace Scripts.Characters.Player
       DrawLine(Vector2.Zero, Velocity * 0.33f, Color.Color8(255, 0, 0), 8);
       DrawLine(Vector2.Zero, _frontWallRay.TargetPosition.Normalized() * 100, Color.Color8(0, 0, 255), 8);
       DrawLine(Vector2.Zero, _backWallRay.TargetPosition.Normalized() * 100, Color.Color8(0, 255, 0), 8);
+
+      var hightLightColor = Color.Color8(255, 0, 255);
+      DrawLine(
+        _leftFloorRay.Position,
+        _leftFloorRay.Position + _leftFloorRay.TargetPosition,
+        IsLeftFootOnGround() ? hightLightColor : Color.Color8(255, 0, 0),
+        8);
+
+      DrawLine(
+        _rightFloorRay.Position,
+        _rightFloorRay.Position + _rightFloorRay.TargetPosition,
+        IsRightFootOnGround() ? hightLightColor : Color.Color8(0, 0, 255),
+        8);
+
       if (_hookAcquired) {
         DrawLine(Vector2.Zero, _hookTarget - GlobalPosition, Color.Color8(255, 255, 0), 8);
       }

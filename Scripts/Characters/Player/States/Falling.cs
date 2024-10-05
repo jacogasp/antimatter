@@ -10,10 +10,12 @@ namespace Scripts.Characters.Player.States
     [Export] public float OnWallSafeMargin { get; set; }
 
     Vector2 _entryPosition;
+    Vector2 _entryVelocity;
 
     public override void Enter(PlayerClass player) {
       GD.Print("falling");
       _entryPosition = player.Position;
+      _entryVelocity = player.Velocity.Abs();
     }
 
     public override PlayerState HandleInput(PlayerClass player) {
@@ -24,7 +26,7 @@ namespace Scripts.Characters.Player.States
           return OnWall;
         }
       }
-      if (player.IsOnFloorOnly()) {
+      if (player.IsGrounded()) {
         return Idle;
       }
       return this;
@@ -32,7 +34,7 @@ namespace Scripts.Characters.Player.States
 
     public override void Update(PlayerClass player, float delta) {
       var velocity = player.Velocity;
-      velocity.X = player.FallingVelocity.X * PlayerClass.HorizontalInputAxis;
+      velocity.X = _entryVelocity.X * PlayerClass.HorizontalInputAxis;
       player.Velocity = velocity;
     }
   }

@@ -17,11 +17,11 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uwawt"]
 radius = 32.0
-height = 274.0
+height = 252.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_umyf5"]
-radius = 33.0
-height = 270.0
+radius = 32.0
+height = 254.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 65792
@@ -38,8 +38,12 @@ scale = Vector2(0.25, 1)
 collision_mask = 131072
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
 scale = Vector2(4, 1)
 shape = SubResource("CapsuleShape2D_uwawt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_umyf5")
 
 [node name="States" type="Node" parent="." node_paths=PackedStringArray("CurrentState")]
 script = ExtResource("2_esxdj")
@@ -121,18 +125,28 @@ AirJump = NodePath("../AirJump")
 Diving = NodePath("../Diving")
 OnWall = NodePath("../OnWall")
 
-[node name="FrontWallRay" type="RayCast2D" parent="."]
+[node name="Rays" type="Node2D" parent="."]
+
+[node name="LeftFloorRay" type="RayCast2D" parent="Rays"]
+position = Vector2(-29, 0)
+target_position = Vector2(0, 128)
+collision_mask = 65536
+hit_from_inside = true
+
+[node name="RightFloorRay" type="RayCast2D" parent="Rays"]
+position = Vector2(28, 0)
+target_position = Vector2(0, 128)
+collision_mask = 65536
+
+[node name="FrontWallRay" type="RayCast2D" parent="Rays"]
 target_position = Vector2(50, 0)
 collision_mask = 65536
 collide_with_areas = true
 
-[node name="BackWallRay" type="RayCast2D" parent="."]
+[node name="BackWallRay" type="RayCast2D" parent="Rays"]
 target_position = Vector2(-50, 0)
 collision_mask = 65536
 collide_with_areas = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_umyf5")
 
 [connection signal="area_entered" from="Area2D" to="." method="OnAreaEntered"]
 [connection signal="area_exited" from="Area2D" to="." method="OnAreaExited"]

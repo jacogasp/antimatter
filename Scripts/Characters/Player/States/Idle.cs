@@ -19,7 +19,7 @@ namespace Scripts.Characters.Player.States
     }
 
     public override PlayerState HandleInput(PlayerClass player) {
-      if (Input.IsActionJustReleased("jump") && player.IsOnFloor()) {
+      if (Input.IsActionJustReleased("jump") && player.IsOnGround()) {
         return StandingJump;
       }
       if (player.Velocity.Y > 0) {

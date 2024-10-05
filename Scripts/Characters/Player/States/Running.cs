@@ -19,7 +19,7 @@ namespace Scripts.Characters.Player.States
 
     public override PlayerState HandleInput(PlayerClass player) {
       if (Input.IsActionJustReleased("jump")) {
-        if (player.IsNearWall()) {
+        if (player.IsFrontNearWall()) {
           return OnWall;
         }
         return RunningJump;
@@ -28,7 +28,7 @@ namespace Scripts.Characters.Player.States
       if (player.HookAcquired && Input.IsActionJustPressed("hook")) {
       }
 
-      if (player.Velocity.Y > 0) {
+      if (!player.IsOnGround() && player.Velocity.Y > 0) {
         return Falling;
       }
       if (PlayerClass.InputDirection == Vector2.Zero) {

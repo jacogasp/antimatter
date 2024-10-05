@@ -12,7 +12,7 @@ namespace Scripts.Characters.Player.States
     }
 
     public override PlayerState HandleInput(PlayerClass player) {
-      if (player.IsOnFloor()) {
+      if (player.IsOnGround()) {
         return Idle;
       }
       return this;
