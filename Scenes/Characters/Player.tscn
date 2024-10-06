@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dl3ldsljs8ems"]
+[gd_scene load_steps=18 format=3 uid="uid://dl3ldsljs8ems"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerClass.cs" id="1_1rkq8"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/StateMachine.cs" id="2_esxdj"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/StandingJump.cs" id="11_ougk4"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/WallJump.cs" id="13_dq5jl"]
 [ext_resource type="Texture2D" uid="uid://dtpu7qo1y56dh" path="res://Assets/block.png" id="14_3wh45"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/PowerWallJump.cs" id="15_dyojf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uwawt"]
 radius = 32.0
@@ -89,7 +90,7 @@ Falling = NodePath("../Falling")
 
 [node name="RunningJump" type="Node" parent="States" node_paths=PackedStringArray("Idle", "OnWall", "AirJump")]
 script = ExtResource("9_44rr8")
-JumpVelocity = Vector2(200, 500)
+JumpVelocity = Vector2(200, 1000)
 JumpHorizontalDump = 0.5
 DirectionChangeVelocity = Vector2(200, 0)
 Idle = NodePath("../Idle")
@@ -109,13 +110,15 @@ Idle = NodePath("../Idle")
 OnWall = NodePath("../OnWall")
 StandingAirJump = NodePath("../StandingAirJump")
 
-[node name="OnWall" type="Node" parent="States" node_paths=PackedStringArray("Idle", "Falling", "WallJump")]
+[node name="OnWall" type="Node" parent="States" node_paths=PackedStringArray("Idle", "Falling", "WallJump", "PowerWallJump")]
 script = ExtResource("8_yemxq")
 WallDumping = 0.5
 Timeout = 0.5
+PowerWallJumpTimeout = 0.5
 Idle = NodePath("../Idle")
 Falling = NodePath("../Falling")
 WallJump = NodePath("../WallJump")
+PowerWallJump = NodePath("../PowerWallJump")
 
 [node name="WallJump" type="Node" parent="States" node_paths=PackedStringArray("Idle", "AirJump", "Diving", "OnWall")]
 script = ExtResource("13_dq5jl")
@@ -124,6 +127,12 @@ Idle = NodePath("../Idle")
 AirJump = NodePath("../AirJump")
 Diving = NodePath("../Diving")
 OnWall = NodePath("../OnWall")
+
+[node name="PowerWallJump" type="Node" parent="States" node_paths=PackedStringArray("Falling")]
+script = ExtResource("15_dyojf")
+JumpVelocity = Vector2(5000, 0)
+Duration = 0.4
+Falling = NodePath("../Falling")
 
 [node name="Rays" type="Node2D" parent="."]
 
