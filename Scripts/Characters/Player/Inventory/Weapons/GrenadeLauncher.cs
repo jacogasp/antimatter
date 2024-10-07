@@ -4,7 +4,7 @@ namespace Antimatter.Scripts.Characters.Player.Inventory.Weapons
 {
   public partial class GrenadeLauncher : Weapon
   {
-    private string _itemName = "Basic Grenade";
+    private string _itemName = "Grenade Launcher";
     public override string ItemName => _itemName;
 
   }
