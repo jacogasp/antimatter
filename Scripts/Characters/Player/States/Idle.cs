@@ -19,7 +19,7 @@ namespace Antimatter.Scripts.Characters.Player.States
     }
 
     public override PlayerState HandleInput(PlayerClass player) {
-      if (Input.IsActionJustReleased("jump") && player.IsOnGround()) {
+      if (Input.IsActionJustPressed("jump") && player.IsOnGround()) {
         return StandingJump;
       }
       if (player.Velocity.Y > 0) {
