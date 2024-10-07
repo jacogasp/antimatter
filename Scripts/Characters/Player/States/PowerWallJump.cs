@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Scripts.Characters.Player.States
+namespace Antimatter.Scripts.Characters.Player.States
 {
   public partial class PowerWallJump : PlayerState
   {

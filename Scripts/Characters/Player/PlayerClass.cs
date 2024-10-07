@@ -1,8 +1,8 @@
 using Godot;
 using Antimatter.Scripts.Settings;
-using System.Runtime.CompilerServices;
+using Antimatter.Scripts.Characters.Player.Inventory;
 
-namespace Scripts.Characters.Player
+namespace Antimatter.Scripts.Characters
 {
   public partial class PlayerClass : CharacterBody2D
   {
@@ -21,6 +21,7 @@ namespace Scripts.Characters.Player
     private Vector2 _acceleration = Vector2.Zero;
     private Vector2 _hookTarget = Vector2.Zero;
     private bool _hookAcquired = false;
+    private InventoryClass _inventory;
 
     public override void _Ready() {
       _startGravityModifier = GravityModifier;
@@ -28,6 +29,7 @@ namespace Scripts.Characters.Player
       _backWallRay = GetNode<RayCast2D>("Rays/BackWallRay");
       _leftFloorRay = GetNode<RayCast2D>("Rays/LeftFloorRay");
       _rightFloorRay = GetNode<RayCast2D>("Rays/RightFloorRay");
+      _inventory = GetNode<InventoryClass>("Inventory");
       _frontWallRayTarget = _frontWallRay.TargetPosition;
       _backWallRayTarget = _backWallRay.TargetPosition;
       GD.Print("Player ready");
@@ -84,6 +86,11 @@ namespace Scripts.Characters.Player
 
     public void OnAreaEntered(Area2D area) {
       GD.Print("entered!");
+
+      if (area.IsInGroup("inventory")) {
+        _inventory.AddItem(area.GetParent<InventoryItem>());
+      }
+
       _hookTarget = area.GlobalPosition;
       _hookAcquired = true;
     }

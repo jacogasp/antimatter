@@ -1,7 +1,6 @@
-using System.Threading;
 using Godot;
 
-namespace Scripts.Characters.Player.States
+namespace Antimatter.Scripts.Characters.Player.States
 {
   public partial class OnWall : PlayerState
   {
