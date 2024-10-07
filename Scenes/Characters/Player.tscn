@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dl3ldsljs8ems"]
+[gd_scene load_steps=19 format=3 uid="uid://dl3ldsljs8ems"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerClass.cs" id="1_1rkq8"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/StateMachine.cs" id="2_esxdj"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/WallJump.cs" id="13_dq5jl"]
 [ext_resource type="Texture2D" uid="uid://dtpu7qo1y56dh" path="res://Assets/block.png" id="14_3wh45"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/PowerWallJump.cs" id="15_dyojf"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/Inventory/InventoryClass.cs" id="16_horxd"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uwawt"]
 radius = 32.0
@@ -36,7 +37,7 @@ texture = ExtResource("14_3wh45")
 
 [node name="Area2D" type="Area2D" parent="."]
 scale = Vector2(0.25, 1)
-collision_mask = 131072
+collision_mask = 131074
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 visible = false
@@ -156,6 +157,9 @@ collide_with_areas = true
 target_position = Vector2(-50, 0)
 collision_mask = 65536
 collide_with_areas = true
+
+[node name="Inventory" type="Node2D" parent="."]
+script = ExtResource("16_horxd")
 
 [connection signal="area_entered" from="Area2D" to="." method="OnAreaEntered"]
 [connection signal="area_exited" from="Area2D" to="." method="OnAreaExited"]

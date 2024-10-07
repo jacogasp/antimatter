@@ -1,5 +1,4 @@
 using Godot;
-using Antimatter.Scripts.Settings;
 using Antimatter.Scripts.Characters.Player.Inventory;
 
 namespace Antimatter.Scripts.Characters
@@ -36,7 +35,7 @@ namespace Antimatter.Scripts.Characters
     }
 
     public override void _PhysicsProcess(double delta) {
-      AddForce(Vector2.Down * Physics.Gravity * GravityModifier);
+      AddForce(Vector2.Down * Settings.Physics2D.Gravity * GravityModifier);
       var velocity = Velocity;
       velocity += _acceleration * (float)delta;
       velocity.Y = Mathf.Clamp(velocity.Y, -Mathf.Inf, FallingVelocity.Y);
@@ -85,18 +84,18 @@ namespace Antimatter.Scripts.Characters
     }
 
     public void OnAreaEntered(Area2D area) {
-      GD.Print("entered!");
-
-      if (area.IsInGroup("inventory")) {
-        _inventory.AddItem(area.GetParent<InventoryItem>());
+      if (area.IsInGroup("collectables")) {
+        _inventory.AddItem((InventoryItem)area);
+      } else if (area.IsInGroup("hook_area")) {
+        _hookTarget = area.GlobalPosition;
+        _hookAcquired = true;
       }
-
-      _hookTarget = area.GlobalPosition;
-      _hookAcquired = true;
     }
 
     public void OnAreaExited(Area2D area) {
-      _hookAcquired = false;
+      if (area.IsInGroup("hook_area")) {
+        _hookAcquired = false;
+      }
     }
 
     public override void _Draw() {

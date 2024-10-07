@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://sb4a1t4usuic"]
+
+[ext_resource type="Script" path="res://Scripts/Characters/Player/Inventory/Medikits/BasicMedikit.cs" id="1_4wq3n"]
+[ext_resource type="Texture2D" uid="uid://dtpu7qo1y56dh" path="res://Assets/block.png" id="1_mulhn"]
+[ext_resource type="Shader" path="res://Scripts/Shaders/BasicColor.gdshader" id="1_o6qtv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vddi1"]
+shader = ExtResource("1_o6qtv")
+shader_parameter/color = Color(0.773255, 0, 0.193196, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6gvsc"]
+size = Vector2(64, 64)
+
+[node name="Medikit" type="Area2D"]
+collision_layer = 3
+script = ExtResource("1_4wq3n")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_vddi1")
+texture = ExtResource("1_mulhn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_6gvsc")

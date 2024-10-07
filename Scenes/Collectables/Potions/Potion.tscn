@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://dy7nugep76qpo"]
+
+[ext_resource type="Shader" path="res://Scripts/Shaders/BasicColor.gdshader" id="1_4ljsj"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/Inventory/Potions/BasicPotion.cs" id="1_rfbm8"]
+[ext_resource type="Texture2D" uid="uid://dtpu7qo1y56dh" path="res://Assets/block.png" id="2_65gab"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oyoxa"]
+size = Vector2(64, 64)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_558k5"]
+shader = ExtResource("1_4ljsj")
+shader_parameter/color = Color(0.158992, 0.195041, 0.692424, 1)
+
+[node name="Potion" type="Area2D"]
+collision_layer = 3
+script = ExtResource("1_rfbm8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_oyoxa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_558k5")
+texture = ExtResource("2_65gab")
