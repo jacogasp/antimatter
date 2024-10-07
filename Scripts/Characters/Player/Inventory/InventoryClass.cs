@@ -6,8 +6,7 @@ namespace Antimatter.Scripts.Characters.Player.Inventory
 {
   public partial class InventoryClass : Node2D
   {
-    private Array<InventoryItem> _items = new();
-
+    private InventoryItem _lastItem = null;
     private void ReparentItem(InventoryItem item) {
       item.DisableMode = CollisionObject2D.DisableModeEnum.Remove;
       item.Reparent(this);
@@ -16,15 +15,11 @@ namespace Antimatter.Scripts.Characters.Player.Inventory
     }
 
     public void AddItem(InventoryItem item) {
-      // prevent adding the same element twice because of the deferred call
-      if (_items.Count == 0 || item != _items[^1]) {
+      // prevent adding the same item twice due to the deferred call
+      if (item != _lastItem) {
         CallDeferred(nameof(ReparentItem), item);
-        _items.Add(item);
+        _lastItem = item;
       }
     }
-    public void ListItems() {
-      GD.Print(_items);
-    }
-
   }
 }
