@@ -21,6 +21,7 @@ namespace Antimatter.Scripts.Characters
     private Vector2 _hookTarget = Vector2.Zero;
     private bool _hookAcquired = false;
     private InventoryNode _inventory;
+    public InventoryNode Inventory { get => _inventory; }
 
     public override void _Ready() {
       _startGravityModifier = GravityModifier;

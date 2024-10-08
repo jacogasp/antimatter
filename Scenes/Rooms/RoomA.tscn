@@ -11,3 +11,4 @@ tile_set = ExtResource("1_00mjw")
 
 [node name="Granade" parent="." instance=ExtResource("2_7d73f")]
 position = Vector2(1278, 0)
+AimingTimeout = 0.0
