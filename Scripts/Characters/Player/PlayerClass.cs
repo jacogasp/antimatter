@@ -20,7 +20,7 @@ namespace Antimatter.Scripts.Characters
     private Vector2 _acceleration = Vector2.Zero;
     private Vector2 _hookTarget = Vector2.Zero;
     private bool _hookAcquired = false;
-    private InventoryClass _inventory;
+    private InventoryNode _inventory;
 
     public override void _Ready() {
       _startGravityModifier = GravityModifier;
@@ -28,7 +28,7 @@ namespace Antimatter.Scripts.Characters
       _backWallRay = GetNode<RayCast2D>("Rays/BackWallRay");
       _leftFloorRay = GetNode<RayCast2D>("Rays/LeftFloorRay");
       _rightFloorRay = GetNode<RayCast2D>("Rays/RightFloorRay");
-      _inventory = GetNode<InventoryClass>("Inventory");
+      _inventory = GetNode<InventoryNode>("Inventory");
       _frontWallRayTarget = _frontWallRay.TargetPosition;
       _backWallRayTarget = _backWallRay.TargetPosition;
       GD.Print("Player ready");

@@ -15,7 +15,7 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/WallJump.cs" id="13_dq5jl"]
 [ext_resource type="Texture2D" uid="uid://dtpu7qo1y56dh" path="res://Assets/block.png" id="14_3wh45"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/PowerWallJump.cs" id="15_dyojf"]
-[ext_resource type="Script" path="res://Scripts/Characters/Player/Inventory/InventoryClass.cs" id="16_horxd"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/Inventory/InventoryNode.cs" id="16_c6f1u"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uwawt"]
 radius = 32.0
@@ -159,7 +159,7 @@ collision_mask = 65536
 collide_with_areas = true
 
 [node name="Inventory" type="Node2D" parent="."]
-script = ExtResource("16_horxd")
+script = ExtResource("16_c6f1u")
 
 [connection signal="area_entered" from="Area2D" to="." method="OnAreaEntered"]
 [connection signal="area_exited" from="Area2D" to="." method="OnAreaExited"]
