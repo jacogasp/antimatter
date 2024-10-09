@@ -16,7 +16,7 @@ namespace Antimatter.Scripts.Characters.Player.States
     public override PlayerState HandleInput(PlayerClass player) {
       var weapons = player.Inventory.GetInventory(InventoryItem.Type.weapon);
       var weapon = (Weapon)weapons.CurrentItem();
-      if (weapon.AimingExpired || !Input.IsActionPressed("fire")) {
+      if (weapon.AimingExpired || Input.IsActionJustReleased("fire")) {
         return Firing;
       }
       return this;
@@ -25,7 +25,8 @@ namespace Antimatter.Scripts.Characters.Player.States
     public override void Update(PlayerClass player, float delta) {
       var weapons = player.Inventory.GetInventory(InventoryItem.Type.weapon);
       var weapon = (Weapon)weapons.CurrentItem();
-      weapon.Aim();
+      var target = player.GetLocalMousePosition();
+      weapon.Aim(target);
     }
   }
 }

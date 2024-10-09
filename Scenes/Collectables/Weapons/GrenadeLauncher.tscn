@@ -14,7 +14,7 @@ size = Vector2(64, 64)
 [node name="GranadeLauncher" type="Area2D"]
 collision_layer = 2
 script = ExtResource("1_d1nw1")
-AimingTimeout = 1.0
+AimingTimeout = 3.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_p4gem")

@@ -2,6 +2,9 @@ using Godot;
 
 namespace Antimatter.Scripts.Characters.Player.States
 {
+  using Inventory;
+  using Inventory.Weapons;
+
   public partial class Firing : PlayerState
   {
 
@@ -10,10 +13,13 @@ namespace Antimatter.Scripts.Characters.Player.States
 
     public override void Enter(PlayerClass player) {
       GD.Print("firing!");
+      var weapons = player.Inventory.GetInventory(InventoryItem.Type.weapon);
+      var weapon = (Weapon)weapons.CurrentItem();
+      weapon.Fire();
     }
 
     public override PlayerState HandleInput(PlayerClass player) {
-      if (Input.IsActionJustReleased("fire")) {
+      if (!Input.IsActionPressed("fire")) {
         return Idle;
       }
       return this;

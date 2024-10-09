@@ -14,7 +14,7 @@ namespace Antimatter.Scripts.Characters.Player.Inventory.Weapons
       SetCollisionLayerValue(Settings.Physics2D.CollisionLayers.IndexOf("weapons"), true);
     }
 
-    public virtual void Aim() {
+    public virtual void Aim(Vector2 target) {
       throw new System.NotImplementedException();
     }
 
