@@ -22,7 +22,6 @@ namespace Antimatter.Scripts.Characters.Player.Inventory.Weapons
       if (_aiming) {
         _aimTimer -= (float)delta;
         if (_aimTimer < 0) {
-          GD.Print("aiming expired");
           _aimExpired = true;
           _aiming = false;
           QueueRedraw();
@@ -34,7 +33,7 @@ namespace Antimatter.Scripts.Characters.Player.Inventory.Weapons
       _aimTimer = AimingTimeout;
       _aimExpired = false;
       _aiming = false;
-      GD.Print(_aimTimer);
+      QueueRedraw();
     }
 
     public override void Aim(Vector2 target) {
