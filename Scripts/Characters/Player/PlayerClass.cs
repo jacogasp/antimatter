@@ -52,10 +52,10 @@ namespace Antimatter.Scripts.Characters
     }
 
     public static Vector2 InputDirection =>
-      Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+      Input.GetVector("move_left", "move_right", "ui_up", "ui_down");
 
     public static float HorizontalInputAxis =>
-      Input.GetAxis("ui_left", "ui_right");
+      Input.GetAxis("move_left", "move_right");
 
     public bool DirectionJustChanged => (Velocity.X * HorizontalInputAxis) < 0;
     public Vector2 FacingDirection => _facingDirection;
