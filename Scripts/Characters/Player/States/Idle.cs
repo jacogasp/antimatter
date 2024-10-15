@@ -31,7 +31,7 @@ namespace Antimatter.Scripts.Characters.Player.States
       return this;
     }
 
-    public override void Update(PlayerClass player, float delta) {
+    public override void FixedUpdate(PlayerClass player, float delta) {
       var velocity = player.Velocity;
       var speedX = Mathf.Abs(velocity.X);
       var k = Mathf.Clamp(t / HorizontalDump, 0, 1);

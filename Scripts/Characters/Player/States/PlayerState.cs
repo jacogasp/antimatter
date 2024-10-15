@@ -12,8 +12,8 @@ namespace Antimatter.Scripts.Characters.Player.States
       throw new System.NotImplementedException();
     }
 
-    public virtual void Update(PlayerClass player, float delta) {
-      throw new System.NotImplementedException();
-    }
+    public virtual void Update(PlayerClass player, float delta) { }
+
+    public virtual void FixedUpdate(PlayerClass player, float delta) { }
   }
 }

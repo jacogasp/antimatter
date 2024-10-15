@@ -31,7 +31,7 @@ namespace Antimatter.Scripts.Characters.Player.States
       return this;
     }
 
-    public override void Update(PlayerClass player, float delta) {
+    public override void FixedUpdate(PlayerClass player, float delta) {
       var velocity = player.Velocity;
       velocity.Y = DiveVelocity.Y;
       player.Velocity = velocity;

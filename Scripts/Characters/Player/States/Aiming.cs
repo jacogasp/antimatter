@@ -22,10 +22,19 @@ namespace Antimatter.Scripts.Characters.Player.States
       return this;
     }
 
-    public override void Update(PlayerClass player, float delta) {
+    public override void FixedUpdate(PlayerClass player, float delta) {
       var weapons = player.Inventory.GetInventory(InventoryItem.Type.weapon);
       var weapon = (Weapon)weapons.CurrentItem();
-      var target = player.GetLocalMousePosition();
+      Vector2 target;
+      if (Input.MouseMode == Input.MouseModeEnum.Hidden) {
+        target = player.GetLocalMousePosition();
+      } else {
+        var lookDirection = new Vector2(
+          Input.GetAxis("aim_left", "aim_right"),
+          Input.GetAxis("aim_up", "aim_down")
+        ).Normalized();
+        target = player.Position * lookDirection;
+      }
       weapon.Aim(target);
     }
   }

@@ -43,7 +43,7 @@ namespace Antimatter.Scripts.Characters.Player.States
       return this;
     }
 
-    public override void Update(PlayerClass player, float delta) {
+    public override void FixedUpdate(PlayerClass player, float delta) {
       var velocity = player.Velocity;
       if (player.DirectionJustChanged) {
         velocity.X = DirectionChangeVelocity.X * PlayerClass.HorizontalInputAxis;

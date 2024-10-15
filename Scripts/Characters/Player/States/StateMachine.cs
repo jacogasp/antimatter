@@ -1,4 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
 using Godot;
 
 namespace Antimatter.Scripts.Characters.Player.States
@@ -14,7 +13,7 @@ namespace Antimatter.Scripts.Characters.Player.States
       CurrentState.Enter(_player);
     }
 
-    public void ProcessStateMachine(double delta) {
+    public void HandleInput() {
       var nextState = CurrentState.HandleInput(_player);
       if (nextState == null) {
         return;
@@ -24,7 +23,15 @@ namespace Antimatter.Scripts.Characters.Player.States
       }
       CurrentState = nextState;
       CurrentState.HandleInput(_player);
+    }
+
+    public override void _Process(double delta) {
+      HandleInput();
       CurrentState.Update(_player, (float)delta);
+    }
+
+    public override void _PhysicsProcess(double delta) {
+      CurrentState.FixedUpdate(_player, (float)delta);
     }
   }
 }

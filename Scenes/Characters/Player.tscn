@@ -1,9 +1,9 @@
-[gd_scene load_steps=23 format=3 uid="uid://dl3ldsljs8ems"]
+[gd_scene load_steps=22 format=3 uid="uid://dl3ldsljs8ems"]
 
 [ext_resource type="Script" path="res://Scripts/Characters/Player/PlayerClass.cs" id="1_1rkq8"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/Falling.cs" id="3_6gndt"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/Idle.cs" id="3_8twyb"]
-[ext_resource type="Script" path="res://Scripts/Characters/Player/States/MovementMachine.cs" id="3_iaawa"]
+[ext_resource type="Script" path="res://Scripts/Characters/Player/States/StateMachine.cs" id="3_hass6"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/AirJump.cs" id="3_mymsm"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/Diving.cs" id="4_6oijr"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/Running.cs" id="5_5u14n"]
@@ -15,7 +15,6 @@
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/WallJump.cs" id="13_dq5jl"]
 [ext_resource type="Texture2D" uid="uid://dtpu7qo1y56dh" path="res://Assets/block.png" id="14_3wh45"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/PowerWallJump.cs" id="15_dyojf"]
-[ext_resource type="Script" path="res://Scripts/Characters/Player/States/WeaponMachine.cs" id="16_5d036"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/Inventory/InventoryNode.cs" id="16_c6f1u"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/Firing.cs" id="17_d6dob"]
 [ext_resource type="Script" path="res://Scripts/Characters/Player/States/Aiming.cs" id="17_k8fey"]
@@ -52,7 +51,7 @@ shape = SubResource("CapsuleShape2D_uwawt")
 shape = SubResource("CapsuleShape2D_umyf5")
 
 [node name="MovementMachine" type="Node" parent="." node_paths=PackedStringArray("CurrentState")]
-script = ExtResource("3_iaawa")
+script = ExtResource("3_hass6")
 CurrentState = NodePath("Idle")
 
 [node name="AirJump" type="Node" parent="MovementMachine" node_paths=PackedStringArray("Idle", "OnWall", "Diving")]
@@ -140,7 +139,7 @@ Duration = 0.4
 Falling = NodePath("../Falling")
 
 [node name="WeaponMachine" type="Node" parent="." node_paths=PackedStringArray("CurrentState")]
-script = ExtResource("16_5d036")
+script = ExtResource("3_hass6")
 CurrentState = NodePath("WeaponIdle")
 
 [node name="Aiming" type="Node" parent="WeaponMachine" node_paths=PackedStringArray("Idle", "Firing")]
