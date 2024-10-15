@@ -34,7 +34,7 @@ namespace Antimatter.Scripts.Characters
       _backWallRayTarget = _backWallRay.TargetPosition;
       GD.Print("Player ready");
     }
-
+   
     public override void _PhysicsProcess(double delta) {
       AddForce(Vector2.Down * Settings.Physics2D.Gravity * GravityModifier);
       var velocity = Velocity;
@@ -61,7 +61,8 @@ namespace Antimatter.Scripts.Characters
     public Vector2 FacingDirection => _facingDirection;
     public bool HookAcquired => _hookAcquired;
 
-    private void CheckFacingDirection() {
+    private void CheckFacingDirection()
+    {
       if (HorizontalInputAxis > 0) {
         _facingDirection = Vector2.Right;
       } else if (HorizontalInputAxis < 0) {
